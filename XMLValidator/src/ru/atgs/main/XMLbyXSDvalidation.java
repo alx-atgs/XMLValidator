@@ -31,7 +31,7 @@ public class XMLbyXSDvalidation {
 
 	final static String PropsFileName = "xml.config.properties";
 
-	private static String inputPathOrTxt;
+	private static String inputFilePathOrXMLmessage;
 	private static String schemaDirPath;
 	private static String LogFormat;
 
@@ -51,11 +51,11 @@ public class XMLbyXSDvalidation {
 		if (args.length != 3) {
 			printUsage();
 		} else {
-			inputPathOrTxt = args[0];
+			inputFilePathOrXMLmessage = args[0];
 			schemaDirPath = args[1];
 			LogFormat = args[2];
 
-			String printOut = XMLbyXSDvalidation.run(inputPathOrTxt, schemaDirPath, LogFormat);
+			String printOut = XMLbyXSDvalidation.run(inputFilePathOrXMLmessage, schemaDirPath, LogFormat);
 			System.out.println(printOut);
 		}
 	}
@@ -154,7 +154,7 @@ public class XMLbyXSDvalidation {
 		LogApp.info(result);
 		// System.out.println("Результат валидации:\n" + result);
 		// System.out.println("==========================================");
-		PrintVars();
+		// PrintVars();
 
 		return result;
 	}

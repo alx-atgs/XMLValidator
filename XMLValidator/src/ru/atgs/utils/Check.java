@@ -52,13 +52,14 @@ public class Check {
 			e.printStackTrace();
 		}
 		System.out.println("================");
-		System.out.println(DelStartandEndSimbols("   dsgdfhg  fdsafs   "));
+		System.out.println(DelSpaceSimbols("   dsgdfhg  fdsafs   "));
 	}
 
 	/**
+	 * Проверка на существование файла
 	 * 
-	 * @param filename
-	 * @return
+	 * @param filename - путь к файлу, как строка
+	 * @return True - если файл существует, иначе - false
 	 */
 	public static boolean file(String filename) {
 		File file = new File(filename);
@@ -66,9 +67,10 @@ public class Check {
 	}
 
 	/**
+	 * Проверка на существование директории (папки, каталога)
 	 * 
-	 * @param path
-	 * @return
+	 * @param path - путь к директории, как строка
+	 * @return True - если файл существует, иначе - false
 	 */
 	public static boolean dir(String path) {
 		File dir = new File(path);
@@ -159,9 +161,9 @@ public class Check {
 	 * одном регулярном выражении знак '|'.
 	 * 
 	 * @param inputString
-	 * @return
+	 * @return String - строка, в которой удалены пробелы в начале и в конце
 	 */
-	private static String DelStartandEndSimbols(String inputString) {
+	private static String DelSpaceSimbols(String inputString) {
 
 		String outputString = inputString.replaceAll("^\\s+|\\s+$", "");
 

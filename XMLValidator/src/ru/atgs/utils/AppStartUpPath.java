@@ -16,6 +16,7 @@ public class AppStartUpPath {
 	private static String outPath;
 
 	public static void main(String[] args) {
+
 		AppStartUpPath startUpPath = new AppStartUpPath();
 		try {
 			System.out.println("startUpPath: " + startUpPath.getDirPath());
