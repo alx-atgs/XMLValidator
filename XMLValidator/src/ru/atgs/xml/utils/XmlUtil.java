@@ -110,8 +110,8 @@ public class XmlUtil {
 					backString = headerMatcher.group(0);
 				}
 			} else {
-				backString = "XmlUtil.getXmlHeader: Ошибка. Во входящем сообщении не удалось обнаружить XmlHeader.\n"
-						+ " Вероятно, в сообщении присутствует BOM (Byte Order Mark).";
+				backString = "XmlUtil.getXmlHeader: Заголовок не найден. Вероятно, в сообщении присутствует BOM (Byte Order Mark).\n"
+						+ "XmlUtil.getXmlHeader: XmlHeader is not found. Рrobably BOM in the message.";
 			}
 		}
 		return backString;
@@ -239,21 +239,25 @@ public class XmlUtil {
 
 				// проверка checkInputXml не пройдена, вероятно несуществующий файл
 			} else {
-				backStringErr = "Ошибка в getRootElement. Во входящем XML некорректно записана первая строка или указан путь к несуществующему файлу.";
+				backStringErr = "XmlUtil.getRootElement: Первая строка некорректна или указан путь к несуществующему файлу.\n"
+						+ "XmlUtil.getRootElement: The first line is incorrect or the file path is not found.";
 				System.out.println(backStringErr);
 
 			}
 
 		} catch (ParserConfigurationException e) {
-			backStringErr = "XmlUtil.getRootElement: Ошибка при определении значения getRootElement\n" + e.getMessage();
+			backStringErr = "XmlUtil.getRootElement: Ошибка при определении значения.\n"
+					+ "XmlUtil.getRootElement: Value definition error.\n" + e.getMessage();
 			// System.out.println(backStringErr);
 
 		} catch (SAXException e) {
-			backStringErr = "XmlUtil.getRootElement: Ошибка при определении значения getRootElement\n" + e.getMessage();
+			backStringErr = "XmlUtil.getRootElement: Ошибка при определении значения.\n"
+					+ "XmlUtil.getRootElement: Value definition error.\n" + e.getMessage();
 			// System.out.println(backStringErr);
 
 		} catch (IOException e) {
-			backStringErr = "XmlUtil.getRootElement: Ошибка при определении значения getRootElement\n" + e.getMessage();
+			backStringErr = "XmlUtil.getRootElement: Ошибка при определении значения.\n"
+					+ "XmlUtil.getRootElement: Value definition error.\n" + e.getMessage();
 			// System.out.println(backStringErr);
 		}
 
@@ -283,13 +287,14 @@ public class XmlUtil {
 					}
 				}
 			} else {
-				backStringErr = "XmlUtil.getXsdShemaName: Ошибка. Проверьте входящее значение корневого элемента. Текущее значение = "
+				backStringErr = "XmlUtil.getXsdShemaName: Проверьте значение корневого элемента. Текущее значение = "
+						+ rootElement + "\n" + "XmlUtil.getXsdShemaName:  Check the root element. Current value= "
 						+ rootElement;
 				System.out.println(backStringErr);
 			}
 		} catch (IOException e) {
-			backStringErr = "XmlUtil.getXsdShemaName: Ошибка при определении значения getXsdShemaName\n"
-					+ e.getMessage();
+			backStringErr = "XmlUtil.getXsdShemaName: Ошибка при определении значения.\n"
+					+ "XmlUtil.getXsdShemaName: Value definition error.\n" + e.getMessage();
 			// System.out.println(backStringErr);
 		}
 		return backString;

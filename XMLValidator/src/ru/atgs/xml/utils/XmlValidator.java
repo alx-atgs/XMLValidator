@@ -181,8 +181,9 @@ public class XmlValidator {
 			// проверяем существование файла, указанного как файл с XSD-схемой
 			File schemaFile = new File(schemaFilePath);
 			if (!schemaFile.exists() && !schemaFile.isFile()) {
-				exceptions.add(new Exception(
-						"XmlValidator.byXsdGetErrors: Не найден указанный файл со схемой XSD: " + schemaFilePath));
+				exceptions.add(
+						new Exception("XmlValidator.byXsdGetErrors: XSD-схема: " + schemaFilePath + " не найдена.\n"
+								+ "XmlValidator.byXsdGetErrors: XSD-schemas: " + schemaFilePath + " not found."));
 			}
 			// если xmlString есть путь к xml-файлу, то берем содержимое файла как строку
 			File xmlFile = new File(xmlString);

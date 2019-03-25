@@ -22,13 +22,14 @@ import ru.atgs.xml.utils.XmlValidator;
  * Класс XMLbyXSDvalidation позволяет проверить входящую xml-строку на
  * соответствие схеме XSD.
  * 
- * @version 1.0.01 Dec 2018
+ * @version 1.0.02 (2019-03-25)
  * 
  * @author Alexander Kuznetsov
  *
  */
 public class XMLbyXSDvalidation {
 
+	final static String Version = "1.0.02";
 	final static String PropsFileName = "xml.config.properties";
 
 	private static String inputFilePathOrXMLmessage;
@@ -48,7 +49,10 @@ public class XMLbyXSDvalidation {
 
 	public static void main(String[] args) {
 
-		if (args.length != 3) {
+		if (args.length == 1 && args[0].toUpperCase().toLowerCase().trim().equals("version")) {
+			XMLbyXSDvalidation.version();
+			return;
+		} else if (args.length != 3) {
 			printUsage();
 		} else {
 			inputFilePathOrXMLmessage = args[0];
@@ -62,11 +66,11 @@ public class XMLbyXSDvalidation {
 
 	public static String run(String inputPathOrTxt, String schemaDirPath, String LogFormat) {
 
-		//
+//		
 		// Проверяем, что папка со схемами существует и создаем в ней
 		// папку для логов (если в ней еще такой нет)
 		if (!Check.dir(schemaDirPath)) {
-			result = "Папка, указанная как папка со схемами, не существует.";
+			result = "Путь к XSD-схемам не найден.\nPath to XSD-schemas not found.";
 			return result;
 		}
 
@@ -77,7 +81,8 @@ public class XMLbyXSDvalidation {
 		if (!Check.dir(LogDirPath)) {
 			boolean success = (new File(LogDirPath)).mkdir();
 			if (!success) {
-				result = "Невозможно создать папку Logs: " + LogDirPath;
+				result = "Невозможно создать папку Logs: " + LogDirPath + "\nUnable to create Logs folder: "
+						+ LogDirPath;
 				return result;
 			}
 		}
@@ -102,14 +107,14 @@ public class XMLbyXSDvalidation {
 		// проверяем во входящем xml-сообщении наличие BOM.
 		// если false, то дальше может не найтись rootElement, также как и XmlHeader.
 		if (Check.foundForUtf8BOM(ObjUtil.string2inputStream(xmlString))) {
-			result = "Во входящем xml-сообщении необходимо убрать BOM - Byte Order Mark (метка о порядке байтов).";
+			result = "Удалите BOM (Byte Order Mark) из XML-сообщения.\nRemove BOM (Byte Order Mark) from the XML message.";
 			LogApp.info(result);
 			return result;
 		}
 		// проверяем во входящей xml-строке наличие корректного XmlHeader, используя
 		// регулярные выражения.
 		if (!XmlUtil.checkXmlHeader(xmlString)) {
-			result = "Во входящем xml-сообщении некорректно записан XmlHeader. Возможно, лишние пробелы. Необходимо исправить.";
+			result = "XmlHeader записан некорректно.\nXmlHeader is incorrect.";
 			LogApp.info(result);
 			return result;
 		}
@@ -117,9 +122,7 @@ public class XMLbyXSDvalidation {
 		// проверяем что входящая xml-строка содержит XmlHeader, равный значению
 		// элемента xmldeclaration из файла свойств (xml.config.properties).
 		if (!XmlUtil.checkInputXml(xmlString)) {
-			result = "Во входящем xml-сообщении отсутствует соответствие XmlHeader и значения элемента xmldeclaration,\n"
-					+ "заданного в xml.config.properties. Проверка проводится с учетом регистроНЕзависимости.\n"
-					+ "Проверьте пробелы и другие символы в входящем XmlHeader.";
+			result = "XmlHeader записан некорректно.\nXmlHeader is incorrect.";
 			LogApp.info(result);
 			return result;
 		}
@@ -131,17 +134,18 @@ public class XMLbyXSDvalidation {
 			if (!xsdname.equals("false")) {
 				schemaFIlelPath = schemaDirPath + File.separator + xsdname;
 				if (!Check.file(schemaFIlelPath) || schemaFIlelPath == null) {
-					result = "Файл с необходимой XSD-схемой по заданному пути: " + schemaFIlelPath + " не существует.";
+					result = "XSD-схема не найдена в папке: " + schemaFIlelPath + "\nXSD-schemas not found in "
+							+ schemaFIlelPath;
 					LogApp.info(result);
 					return result;
 				}
 			} else {
-				result = "Для входящего xml-сообщения корневой элемент не соответстует ни одной XSD-схеме.";
+				result = "Входящее сообщение не соответстует ни одной XSD-схеме.\nThe message does not match any XSD schema.";
 				LogApp.info(result);
 				return result;
 			}
 		} else {
-			result = "Для входящего xml-сообщения корневой элемент не может быть определен.";
+			result = "Невозможно определить корневой элемент.\nThe root element cannot be defined.";
 			LogApp.info(result);
 			return result;
 		}
@@ -157,6 +161,13 @@ public class XMLbyXSDvalidation {
 		// PrintVars();
 
 		return result;
+	}
+
+	/**
+	 * 
+	 */
+	public static void version() {
+		System.out.println("\nXMLbyXSDvalidation.jar version: " + Version + "\n");
 	}
 
 	/**
@@ -183,5 +194,7 @@ public class XMLbyXSDvalidation {
 
 	private static void printUsage() {
 		System.out.println("Usage : java -jar XMLbyXSDvalidation.jar <xmlFilePath> <schemaDirPath> <LogFormat>");
+		System.out.println("\nShow XMLbyXSDvalidation.jar version:");
+		System.out.println("Usage: java -jar XMLbyXSDvalidation.jar version\n");
 	}
 }
